@@ -10,9 +10,10 @@ int filled = 0;
 //Functions
 void display(char[]);
 int whogoesfirst();
-void checkwin(char[]);
+int checkwin(char[]);
 void player(char[], char);
 int checkgrid(char[]);
+void displayResult(char box[]);
 
 int main()
 {
@@ -40,24 +41,28 @@ int main()
 	printf_s("\n");
 
 	flag = turn + 1;
-
-	while (checkgrid(box) != 1)
-	{
-		flag = (flag % 2) ? 0 : 1;
-		if (flag == 1) {
-			printf_s("Player 1 turn\n");
-			player(box, 'O');
-		}
-		else
+	
+		while (checkgrid(box) != 1 && checkwin(box) == -1)
 		{
-			printf_s("Player 2 turn\n");
-			player(box, 'X');
+			
+			flag = (flag % 2) ? 0 : 1;
+			if (flag == 1) {
+				printf_s("Player 1 turn\n");
+				player(box, 'O');
+			}
+			else
+			{
+				printf_s("Player 2 turn\n");
+				player(box, 'X');
+
+			}
+
+			printf_s("\n");
+			
 		}
-		
-		printf_s("\n");
+		displayResult(box);
 	}
 
-}
 
 void display(char box[])
 {
@@ -118,7 +123,49 @@ int checkgrid(char box[])
 	}
 }
 
-void checkwin(char box[])
+int checkwin(char box[])
 {
+	/*checking rows*/
+	if (box[1] == box[2] && box[2] == box[3] && box[2] != ' ')
+		return box[2] == 'X' ? 10 : -10;
 
+	if (box[4] == box[5] && box[5] == box[6] && box[4] != ' ')
+		return box[4] == 'X' ? 10 : -10;
+
+	if (box[7] == box[8] && box[8] == box[9] && box[8] != ' ')
+		return box[8] == 'X' ? 10 : -10;
+
+	/*checking columns*/
+	if (box[1] == box[4] && box[4] == box[7] && box[1] != ' ')
+		return box[1] == 'X' ? 10 : -10;
+
+	if (box[2] == box[5] && box[5] == box[8] && box[2] != ' ')
+		return box[2] == 'X' ? 10 : -10;
+
+	if (box[3] == box[6] && box[6] == box[9] && box[3] != ' ')
+		return box[3] == 'X' ? 10 : -10;
+
+	/*checking diagonals*/
+	if (box[1] == box[5] && box[5] == box[9] && box[1] != ' ')
+		return box[1] == 'X' ? 10 : -10;
+
+	if (box[3] == box[5] && box[5] == box[7] && box[3] != ' ')
+		return box[3] == 'X' ? 10 : -10;
+
+	return -1;
+}
+
+/* Game Result*/
+void displayResult(char box[]) {
+	int x = checkwin(box);
+	if (x == 10) {
+		printf("Player X won\n");
+	}
+	else if (x == -10) {
+		printf("Player O won\n");
+	}
+	else {
+		printf("....DRAW...\n");
+	}
+	display(box);
 }
