@@ -8,12 +8,12 @@
 
 int filled = 0;
 //Functions
-void display(char box[]);
+void display(char[]);
 int whogoesfirst();
 void gameover();
 void checkwin();
 void player(char[], char);
-int checkgrid();
+int checkgrid(char[]);
 
 int main()
 {
@@ -26,6 +26,8 @@ int main()
 	}
 
 	display(box);
+
+
 	turn = whogoesfirst();
 	if (turn == 0) {
 		printf_s("Player 1 goes first\n");
@@ -37,8 +39,10 @@ int main()
 		player(box, 'X');
 	}
 	printf_s("\n");
+
 	flag = turn + 1;
-	while (checkgrid() != 1)
+
+	while (checkgrid(box) != 1)
 	{
 		flag = (flag % 2) ? 0 : 1;
 		if (flag == 1) {
@@ -74,26 +78,33 @@ int whogoesfirst()
 void player(char box[], char symbol)
 {
 	int pos;
+	//system("cls");
 	printf_s("Enter the location");
 	scanf_s("%d", &pos);
-	if (symbol == 'O')
+	if (box[pos] == ' ')
 	{
-		box[pos] = 'O';
+		if (symbol == 'O')
+		{
+			box[pos] = 'O';
+		}
+		else
+		{
+			box[pos] = 'X';
+		}
 	}
 	else
 	{
-		box[pos] = 'X';
+		printf_s("Invalid move\n");
 	}
 	filled++;
-	system("cls");
 	display(box);
 	printf_s("%d", filled);
 	
 }
 
-int checkgrid()
+int checkgrid(char box[])
 {
-	if (filled >= 9)
+	if (filled == 9)
 	{
 		return 1;
 	}
