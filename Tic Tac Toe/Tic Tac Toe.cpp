@@ -11,7 +11,7 @@ int filled = 0;
 void display(char[]);
 int whogoesfirst();
 void gameover();
-void checkwin();
+void checkwin(char[]);
 void player(char[], char);
 int checkgrid(char[]);
 
@@ -79,24 +79,29 @@ void player(char box[], char symbol)
 {
 	int pos;
 	//system("cls");
+again:
 	printf_s("Enter the location");
 	scanf_s("%d", &pos);
+
 	if (box[pos] == ' ')
 	{
 		if (symbol == 'O')
 		{
 			box[pos] = 'O';
+			filled++;
 		}
 		else
 		{
 			box[pos] = 'X';
+			filled++;
 		}
 	}
 	else
 	{
-		printf_s("Invalid move\n");
+		printf_s("Invalid move! Try again");
+		goto again;
 	}
-	filled++;
+	
 	display(box);
 	printf_s("%d", filled);
 	
@@ -112,4 +117,9 @@ int checkgrid(char box[])
 	{
 		return 0;
 	}
+}
+
+void checkwin(char box[])
+{
+
 }
